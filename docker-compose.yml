@@ -1,0 +1,26 @@
+#Kafka Service
+version: '3'
+    
+services:
+    message_broker:
+        image: wurstmeister/kafka
+        restart: always
+        ports:
+            - "9092"
+        networks:
+            - backend
+        depends_on:
+            - message_broker_zookeeper
+        environment:
+            KAFKA_ZOOKEEPER_CONNECT: message_broker_zookeeper:2181
+            KAFKA_ADVERTISED_HOST_NAME: message_broker
+    message_broker_zookeeper:
+        image: zookeeper
+        restart: always
+        networks:
+            - backend
+networks:
+    backend:
+        driver: bridge
+        
+
